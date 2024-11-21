@@ -2,7 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyJwt } from "@/lib/jwt";
 import { jsonResponse } from './utils';
 
-type AuthenticatedUser = { userId: number };
+type AuthenticatedUser = { 
+    user_id: number ,
+    username: string,
+    email: string,
+    prefix: string,
+    name:string,
+    familyname: string,
+    middlename: string,
+    prefix_en: string,
+    name_en: string,
+    familyname_en: string,
+    middlename_en: string,
+    account_status: string,
+    faculty_name: string,
+    current_role: string,
+    user_key: string,
+    iat:  number ,
+    exp:  number ,
+};
 
 export async function authenticate(request: NextRequest): Promise<AuthenticatedUser | NextResponse> {
     const authHeader = request.headers.get('authorization');
@@ -22,7 +40,7 @@ export async function authenticate(request: NextRequest): Promise<AuthenticatedU
 
     try {
         const decoded = verifyJwt(token) as AuthenticatedUser;
-        // console.log(decoded)
+        console.log(decoded)
         return decoded;
     } catch (error) {
         return jsonResponse(401, {

@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
                         name_en: isValidToken.data.firstname,
                         familyname_en: isValidToken.data.lastname,
                         middlename_en: "",
-                        faculty_id: isValidToken.data.faculty_id == "" ? null : isValidToken.data.faculty_id ,
+                        faculty_id: isValidToken.data.faculty_id == "" ? null : isValidToken.data.faculty_id,
                         faculty_name: isValidToken.data.facultyName,
                         created_at: currentdate,
                         updated_at: currentdate,
@@ -220,5 +220,7 @@ export async function POST(request: NextRequest) {
             errors: err
         });
 
-    } 
+    } finally {
+        await prisma.$disconnect();
+    }
 }
