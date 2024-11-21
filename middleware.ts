@@ -19,6 +19,11 @@ export function middleware(request: NextRequest) {
         const homeUrl = new URL('/', request.url); // Redirect to home page if token is present
         return NextResponse.redirect(homeUrl);
     }
+
+    if (pathname === '/logout' && token) {
+        const loginUrl = new URL('/login', request.url); // เปลี่ยนไปหน้า login
+        return NextResponse.redirect(loginUrl);
+    }
     
     if (protectedPaths.includes(pathname) && !token) {
         const loginUrl = new URL('/login', request.url); // เปลี่ยนไปหน้า login
