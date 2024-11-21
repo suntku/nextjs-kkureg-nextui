@@ -1,0 +1,19 @@
+version: '3'
+services:
+  nextjs:    
+    restart: always
+    image: suntku/app:netsat-scan-v1
+    ports:
+      - "8803:3000"
+  nginx: 
+    restart: always
+    build: ./nginx
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - /etc/letsencrypt/live/registrar.kku.ac.th-0001/fullchain.pem:/etc/letsencrypt/live/registrar.kku.ac.th-0001/fullchain.pem
+      - /etc/letsencrypt/live/registrar.kku.ac.th-0001/privkey.pem:/etc/letsencrypt/live/registrar.kku.ac.th-0001/privkey.pem
+    ports:
+      - 8804:80
+      - 8805:443
+    environment:
+      TZ: Asia/Bangkok

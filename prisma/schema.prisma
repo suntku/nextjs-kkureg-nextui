@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountStatus {
+  A
+  I
+  W
+  C
+}
+
+model user {
+  user_id          Int           @id @default(autoincrement())
+  username         String
+  email            String        @unique
+  password         String?
+  citizen_id       String
+  prefix           String        @db.VarChar(45)
+  name             String
+  familyname       String
+  middlename       String?
+  prefix_en        String        @db.VarChar(45)
+  name_en          String
+  familyname_en    String
+  middlename_en    String?
+  account_status   AccountStatus @default(I)
+  faculty_id       String?
+  faculty_name     String?
+  created_at       DateTime      @default(now())
+  updated_at       DateTime
+  created_user_id  Int
+  updated_user_id  Int
+  phone_number     String?       @db.VarChar(45)
+  sso_id           String?       @db.VarChar(45)
+  sso_hash_id      String?       @db.LongText
+  sso_account_type String?       @db.VarChar(45)
+  user_key         String        @db.VarChar(200)
+  current_role     String        @db.VarChar(50)
+}
+
+model log_login {
+  log_id      Int      @id @default(autoincrement())
+  user_id     Int
+  action_type String   @db.VarChar(50)
+  status       AccountStatus @default(A)
+  ip          String?   @db.VarChar(50)
+  ua          String   @db.VarChar(255)
+  created_at  DateTime @default(now())
+  message String?   @db.VarChar(255)
+}
